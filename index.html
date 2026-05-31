@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>NSE Stock Screener Pro</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>NSE Stock Screener Pro</h1>
+
+<div class="toolbar">
+
+<input
+    type="text"
+    id="search"
+    placeholder="Search Symbol / Sector / Industry..."
+>
+
+<select id="filter">
+
+    <option value="all">
+        All Stocks
+    </option>
+
+    <option value="buy">
+        Buy / Strong Buy
+    </option>
+
+    <option value="rsi30">
+        RSI < 30
+    </option>
+
+    <option value="rsi70">
+        RSI > 70
+    </option>
+
+    <option value="upside20">
+        Upside > 20%
+    </option>
+
+</select>
+
+<button onclick="loadData()">
+    Refresh
+</button>
+
+</div>
+
+<div class="table-container">
+
+<table id="stocks">
+
+<thead>
+
+<tr>
+
+<th onclick="sortTable('symbol')">
+Symbol
+</th>
+
+<th onclick="sortTable('close')">
+CMP
+</th>
+
+<th onclick="sortTable('rsi')">
+RSI
+</th>
+
+<th onclick="sortTable('dma20_gap_pct')">
+D20%
+</th>
+
+<th onclick="sortTable('dma50_gap_pct')">
+D50%
+</th>
+
+<th onclick="sortTable('dma100_gap_pct')">
+D100%
+</th>
+
+<th onclick="sortTable('dma200_gap_pct')">
+D200%
+</th>
+
+<th onclick="sortTable('dma300_gap_pct')">
+D300%
+</th>
+
+<th onclick="sortTable('target')">
+Target
+</th>
+
+<th onclick="sortTable('target_upside_pct')">
+Upside%
+</th>
+
+<th onclick="sortTable('sector')">
+Sector
+</th>
+
+<th onclick="sortTable('industry')">
+Industry
+</th>
+
+<th onclick="sortTable('trailing_pe')">
+PE
+</th>
+
+<th onclick="sortTable('forward_pe')">
+Fwd PE
+</th>
+
+<th onclick="sortTable('price_to_book')">
+PB
+</th>
+
+<th onclick="sortTable('roe')">
+ROE %
+</th>
+
+<th onclick="sortTable('debt_to_equity')">
+DebtEq
+</th>
+
+<th onclick="sortTable('revenue_growth')">
+Revenue Growth %
+</th>
+
+<th onclick="sortTable('earnings_growth')">
+Earnings Growth %
+</th>
+
+<th onclick="sortTable('recommendation')">
+Recommendation
+</th>
+
+<th onclick="sortTable('analyst_count')">
+Analysts
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
