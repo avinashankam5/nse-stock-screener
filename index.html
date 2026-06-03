@@ -1,55 +1,177 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
 <meta charset="UTF-8">
 
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>NSE Stock Screener Pro</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+      href="style.css">
 
 </head>
 
 <body>
 
-<h1>NSE Stock Screener Pro</h1>
+<div class="header">
+
+    <h1>
+        NSE Stock Screener Pro
+    </h1>
+
+</div>
 
 <div class="toolbar">
 
-<input
-    type="text"
-    id="search"
-    placeholder="Search Symbol / Sector / Industry..."
->
+    <input
+        type="text"
+        id="search"
+        placeholder="Search Symbol..."
+    >
 
-<select id="filter">
+    <select id="sectorFilter">
 
-    <option value="all">
-        All Stocks
-    </option>
+        <option value="">
+            All Sectors
+        </option>
 
-    <option value="buy">
-        Buy / Strong Buy
-    </option>
+    </select>
 
-    <option value="rsi30">
-        RSI < 30
-    </option>
+    <select id="industryFilter">
 
-    <option value="rsi70">
-        RSI > 70
-    </option>
+        <option value="">
+            All Industries
+        </option>
 
-    <option value="upside20">
-        Upside > 20%
-    </option>
+    </select>
 
-</select>
+    <select id="recommendationFilter">
 
-<button onclick="loadData()">
-    Refresh
-</button>
+        <option value="">
+            All Ratings
+        </option>
+
+        <option value="strong_buy">
+            Strong Buy
+        </option>
+
+        <option value="buy">
+            Buy
+        </option>
+
+        <option value="hold">
+            Hold
+        </option>
+
+        <option value="sell">
+            Sell
+        </option>
+
+    </select>
+
+    <select id="periodSelector">
+
+        <option value="return_1d">
+            1D
+        </option>
+
+        <option value="return_2d">
+            2D
+        </option>
+
+        <option value="return_3d">
+            3D
+        </option>
+
+        <option value="return_5d">
+            5D
+        </option>
+
+        <option value="return_10d">
+            10D
+        </option>
+
+        <option value="return_20d">
+            20D
+        </option>
+
+        <option value="return_1m">
+            1M
+        </option>
+
+        <option value="return_3m">
+            3M
+        </option>
+
+        <option value="return_6m">
+            6M
+        </option>
+
+        <option value="return_1y"
+                selected>
+            1Y
+        </option>
+
+    </select>
+
+    <input
+        type="number"
+        id="customDays"
+        value="30"
+        min="1"
+    />
+
+    <button id="applyDaysBtn">
+        Custom Return
+    </button>
+
+   </select>
+
+   <input
+       type="number"
+       id="minReturn"
+       placeholder="Min %"
+   />
+
+   <input
+       type="number"
+       id="maxReturn"
+       placeholder="Max %"
+    />
+
+    <button onclick="loadData()">
+        Refresh
+    </button>
+
+</div>
+
+<div class="toolbar">
+
+    <label>
+        From Date
+    </label>
+
+    <input
+        type="date"
+        id="fromDate"
+    >
+
+    <label>
+        To Date
+    </label>
+
+    <input
+        type="date"
+        id="toDate"
+    >
+
+    <button id="dateRangeBtn">
+        Apply Date Range
+    </button>
 
 </div>
 
@@ -67,6 +189,54 @@ Symbol
 
 <th onclick="sortTable('close')">
 CMP
+</th>
+
+<th>
+Return Bar
+</th>
+
+<th onclick="sortTable('selected_return')">
+Return %
+</th>
+
+<th onclick="sortTable('custom_return')">
+Custom %
+</th>
+
+<th onclick="sortTable('date_return')">
+Date Return %
+</th>
+
+<th>
+Sparkline
+</th>
+
+<th onclick="sortTable('target_upside_pct')">
+Upside%
+</th>
+
+<th onclick="sortTable('recommendation')">
+Reco
+</th>
+
+<th onclick="sortTable('analyst_count')">
+Analysts
+</th>
+
+<th onclick="sortTable('ath_distance_pct')">
+ATH%
+</th>
+
+<th onclick="sortTable('high52_distance_pct')">
+52WH%
+</th>
+
+<th onclick="sortTable('sector')">
+Sector
+</th>
+
+<th onclick="sortTable('industry')">
+Industry
 </th>
 
 <th onclick="sortTable('rsi')">
@@ -93,22 +263,6 @@ D200%
 D300%
 </th>
 
-<th onclick="sortTable('target')">
-Target
-</th>
-
-<th onclick="sortTable('target_upside_pct')">
-Upside%
-</th>
-
-<th onclick="sortTable('sector')">
-Sector
-</th>
-
-<th onclick="sortTable('industry')">
-Industry
-</th>
-
 <th onclick="sortTable('trailing_pe')">
 PE
 </th>
@@ -122,7 +276,7 @@ PB
 </th>
 
 <th onclick="sortTable('roe')">
-ROE %
+ROE
 </th>
 
 <th onclick="sortTable('debt_to_equity')">
@@ -130,19 +284,11 @@ DebtEq
 </th>
 
 <th onclick="sortTable('revenue_growth')">
-Revenue Growth %
+Revenue Growth
 </th>
 
 <th onclick="sortTable('earnings_growth')">
-Earnings Growth %
-</th>
-
-<th onclick="sortTable('recommendation')">
-Recommendation
-</th>
-
-<th onclick="sortTable('analyst_count')">
-Analysts
+Earnings Growth
 </th>
 
 </tr>
@@ -154,6 +300,15 @@ Analysts
 </tbody>
 
 </table>
+
+</div>
+
+<div
+    class="footer"
+    id="recordCount"
+>
+
+    Loading...
 
 </div>
 
