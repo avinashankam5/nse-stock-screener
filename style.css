@@ -615,57 +615,63 @@ tbody td:first-child {
 
     height: 60px;
 
-    display: flex;
-
-    align-items: center;
-
     position: relative;
-
-    gap: 1px;
 
     overflow: hidden;
 }
 
-.sparklineBox::before {
-
-    content: "";
+.sparkBaseline {
 
     position: absolute;
+
+    top: 50%;
 
     left: 0;
 
     right: 0;
 
-    top: 50%;
-
     height: 1px;
 
-    background: #9ca3af;
+    background: #94a3b8;
+}
+
+.sparkBar {
+
+    position: absolute;
+
+    width: 3px;
 }
 
 .sparkUp {
 
-    flex: 1;
-
     background: #22c55e;
 
-    align-self: flex-start;
+    bottom: 50%;
 }
 
 .sparkDown {
 
-    flex: 1;
-
     background: #ef4444;
 
-    align-self: flex-end;
+    top: 50%;
 }
 
-.sparkFlat {
+.footer-links {
 
-    flex: 1;
+    text-align: center;
 
-    background: #d1d5db;
+    padding: 20px;
 
-    height: 2px;
+    margin-top: 20px;
+
+    font-size: 14px;
+}
+
+.footer-links a {
+
+    text-decoration: none;
+
+    color: #2563eb;
+
+    margin: 0 8px;
 }

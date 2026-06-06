@@ -475,8 +475,32 @@ function createSparkline(
     const slice =
         history.slice(-days);
 
-    let html =
-        '<div class="sparklineBox">';
+    const width = 250;
+
+    const height = 60;
+
+    const baseline =
+        height / 2;
+
+    const barWidth =
+        width / slice.length;
+
+    let svg =
+        `
+        <svg
+            width="${width}"
+            height="${height}"
+        >
+
+        <line
+            x1="0"
+            y1="${baseline}"
+            x2="${width}"
+            y2="${baseline}"
+            stroke="#94a3b8"
+            stroke-width="1"
+        />
+        `;
 
     for (
         let i = 1;
@@ -503,51 +527,127 @@ function createSparkline(
                 prev
             ) * 100;
 
-        const height =
+        const barHeight =
             Math.max(
-                4,
+                2,
                 Math.min(
                     Math.abs(
                         pctMove
-                    ) * 8,
-                    40
+                    ) * 5,
+                    25
                 )
             );
 
-        let cls =
-            "sparkFlat";
+        const x =
+            i * barWidth;
 
-        if (
-            curr > prev
-        )
-            cls =
-                "sparkUp";
+        const color =
+            pctMove >= 0
+            ? "#22c55e"
+            : "#ef4444";
 
-        if (
-            curr < prev
-        )
-            cls =
-                "sparkDown";
+        const y =
+            pctMove >= 0
+            ? baseline - barHeight
+            : baseline;
 
-        html +=
+        svg +=
             `
-            <div
-                class="${cls}"
-                title="
+            <rect
+                x="${x}"
+                y="${y}"
+                width="${barWidth - 1}"
+                height="${barHeight}"
+                fill="${color}"
+            >
+                <title>
 Date: ${slice[i].date}
 Change: ${pctMove.toFixed(2)}%
-"
-                style="
-                    height:${height}px;
-                "
-            ></div>
+                </title>
+            </rect>
             `;
     }
 
-    html += "</div>";
+    svg +=
+        "</svg>";
 
-    return html;
+    return svg;
 }
+
+function createTrendChart(
+    history,
+    days
+) {
+
+    if (
+        !history ||
+        history.length < 2
+    ) {
+        return "No Data";
+    }
+
+    const slice =
+        history.slice(-days);
+
+    const width = 300;
+    const height = 70;
+
+    const closes =
+        slice.map(
+            x => Number(x.close)
+        );
+
+    const min =
+        Math.min(...closes);
+
+    const max =
+        Math.max(...closes);
+
+    const range =
+        max - min || 1;
+
+    let points = "";
+
+    slice.forEach(
+        (item, index) => {
+
+            const x =
+                (index * width)
+                /
+                (slice.length - 1);
+
+            const y =
+                height -
+                (
+                    (
+                        item.close - min
+                    )
+                    /
+                    range
+                ) * height;
+
+            points +=
+                `${x},${y} `;
+        }
+    );
+
+    return `
+        <svg
+            width="${width}"
+            height="${height}"
+        >
+
+            <polyline
+                points="${points}"
+                fill="none"
+                stroke="#2563eb"
+                stroke-width="2"
+            />
+
+        </svg>
+    `;
+}
+
 // ----------------------------------
 // Render Table
 // ----------------------------------
@@ -652,6 +752,19 @@ function renderTable() {
                )}
 
             </td>
+
+            <td>
+                ${createTrendChart(
+                    stock.history,
+                    Number(
+                        document
+                        .getElementById(
+                            "customDays"
+                        )
+                        .value || 30
+                    )
+               )}
+             </td>
 
             <td>
                 ${formatPercent(
